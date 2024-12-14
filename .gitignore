@@ -2,4 +2,5 @@ lesson 1 - setup train/models/*
 lesson 1 - setup train/fer2013.csv
 lesson 2 - inference onnx/models/*
 lesson 3 - fastapi docker/models/*
+lesson 3 - fastapi docker/docker_url_inference/models/*
 lesson 4 - dvc github s3 ecr/models/*
