@@ -1,0 +1,5 @@
+outs:
+- md5: d02e97ad2b4ccf3180ea8a1182ff6999
+  size: 58875705
+  hash: md5
+  path: trained_model.onnx

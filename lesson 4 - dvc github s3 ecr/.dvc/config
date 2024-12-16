@@ -1,0 +1,4 @@
+[core]
+    remote = model-store
+['remote "model-store"']
+    url = s3://models-dvc-remote/trained_models/
