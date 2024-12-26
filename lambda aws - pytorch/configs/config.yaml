@@ -1,0 +1,5 @@
+defaults:
+  - model: default
+  - processing: default
+  - training: default
+  

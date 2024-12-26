@@ -1,0 +1,7 @@
+in_channel: 1 
+num_classes: 7 
+dropout: 0.5
+lr: 3e-4
+device: mps
+batch_size: 128
+cut_size: 44

@@ -1,0 +1,13 @@
+torch
+torchvision
+numpy
+face-recognition
+opencv-python-headless
+uvicorn
+requests
+boto3
+wandb
+pytorch_lightning
+scikit-learn
+seaborn
+pandas

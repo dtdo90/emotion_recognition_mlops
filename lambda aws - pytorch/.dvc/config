@@ -1,0 +1,6 @@
+[core]
+    remote = model-ckpt
+['remote "model-store"']
+    url = s3://models-dvc-remote/trained_models/
+['remote "model-ckpt"']
+    url = s3://models-dvc-remote/trained_models_ckpt/
