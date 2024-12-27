@@ -4,23 +4,20 @@ import numpy as np
 import requests
 import boto3
 import uuid
+from inference_onnx import EmotionPredictor
+
+# initialize S3 client
+s3_client=boto3.client('s3')
+S3_BUCKET_NAME="image-results"
+inference=EmotionPredictor("./models/trained_model.onnx")
 
 def lambda_handler(event, context):
     """ AWS lambda handler for inference
-        Input: 
-                { "image_url": "https://image_url" }
+        Input: use direct url 
+                { "image_url": "https://drive.google.com/uc?export=view&id=1XkJ6gvj46AAroLKOcGXDCf9pdSWksJy7" 
+                }
         Return: image_result_ulr
     """
-    # initialize S3 client
-    s3_client=boto3.client('s3')
-    S3_BUCKET_NAME="image-results"
-    print("Start loading model ...")
-    from inference_onnx import EmotionPredictor
-
-    inference=EmotionPredictor("./models/trained_model.onnx")
-
-    print("Model loaded successfully!")
-
     try:
         # get input from event
         image_url=event.get("image_url")        

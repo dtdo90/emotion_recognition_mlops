@@ -41,18 +41,15 @@ RUN pip install "dvc[s3]"   # since s3 is the remote storage
 # Copy the rest of the application files to /app
 COPY . /var/task
 
-# Set up permissions and model
-RUN chmod -R 755 . && \
-    dvc init --no-scm -f && \
-    dvc remote add -d model-store s3://models-dvc-remote/trained_models/ && \
-    dvc pull models/trained_model.onnx.dvc
-
 # Initialize DVC and configure remote storage
 RUN dvc init --no-scm -f
 RUN dvc remote add -d model-store s3://models-dvc-remote/trained_models/
 
-# pull the trained model
-RUN dvc pull models/trained_model.onnx.dvc
+# Set up permissions and pull the model from s3 
+RUN chmod -R 755 . && \
+    dvc init --no-scm -f && \
+    dvc remote add -d model-store s3://models-dvc-remote/trained_models/ && \
+    dvc pull models/trained_model.onnx.dvc
 
 # Run lambda_handler
 CMD [ "lambda_handler.lambda_handler"]

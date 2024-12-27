@@ -11,6 +11,9 @@ from utils import timing
 import onnxruntime as ort
 import logging
 
+import os
+os.environ["ORT_DISABLE_CPUINFO"] = "1"
+
 # Configure logging before ONNX Runtime initialization
 logging.basicConfig(level=logging.INFO)
 
@@ -32,19 +35,44 @@ class EmotionPredictor:
             5: ['Surprise', (0,255,0), (255,255,255)],
             6: ['Neutral', (160,160,160), (255,255,255)]
         }
-        # Set up ONNX runtime session
-        print("Loading ONNX model!")
-        self.ort_session = ort.InferenceSession(
-            model_onnx_path, 
-            providers=['CPUExecutionProvider']
-        )
-        print("ONNX model loaded successfully!")
+        try:
+            # Configure ONNX Runtime session options
+            options = ort.SessionOptions()
+            options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+            options.intra_op_num_threads = 1  # Restrict to single thread for Lambda
+            
+            # Initialize session with options
+            self.ort_session = ort.InferenceSession(
+                model_onnx_path,
+                options,
+                providers=['CPUExecutionProvider']
+            )
+            logging.info("ONNX model loaded successfully!")
+            
+            # Set up transform
+            cut_size = 44
+            self.transform = transforms.Compose([
+                transforms.TenCrop(cut_size),
+                transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])),
+            ])
+            
+        except Exception as e:
+            logging.error(f"Error initializing ONNX model: {e}")
+            raise
+
+        # # Set up ONNX runtime session
+        # print("Loading ONNX model!")
+        # self.ort_session = ort.InferenceSession(
+        #     model_onnx_path, 
+        #     providers=['CPUExecutionProvider']
+        # )
+        # print("ONNX model loaded successfully!")
         
-        # set up transform
-        cut_size=44
-        self.transform=transforms.Compose([transforms.TenCrop(cut_size),
-                                           transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])),
-                                           ])
+        # # set up transform
+        # cut_size=44
+        # self.transform=transforms.Compose([transforms.TenCrop(cut_size),
+        #                                    transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])),
+        #                                    ])
     @timing
     def inference_image(self, image):
         # Call the undecorated version internally
