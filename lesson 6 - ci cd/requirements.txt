@@ -1,0 +1,10 @@
+torch
+torchvision
+onnxruntime
+numpy
+face-recognition
+opencv-python-headless
+pytorch_lightning
+uvicorn
+fastapi
+requests
