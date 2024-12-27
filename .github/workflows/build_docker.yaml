@@ -1,0 +1,36 @@
+name: Build Docker Container
+
+on: [push]
+
+jobs:
+  mlops-docker:
+    runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-dir: ./lesson 6 - ci cd
+    steps:
+    - name: Checkout         # Clone the repository code to the GitHub-hosted runner 
+      uses: actions/checkout@v2
+      with:
+        ref: ${{github.ref}} # Check the branch that triggered the workflow
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+        aws-region: ap-southeast-1
+    - name: Build docker
+      run: |
+        docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID}}
+                     --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY}}
+                     --t inference:latest .
+    - name: Push2ECR
+      id: ecr
+      uses: jwalton/gh-ecr-push@v1
+      with:
+        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: ap-southeast-1
+        image: mlops-basics:latest
+    - name: Update lambda with lastest image
+      run: aws lambda update-function-code --function-name  mlops-basics --image-uri 149536469951.dkr.ecr.ap-southeast-1.amazonaws.com/mlops-basics:latest
