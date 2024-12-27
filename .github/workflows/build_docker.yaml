@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults: 
       run:
-        working-dir: ./lesson 6 - ci cd
+        working-directory: ./lesson 6 - ci cd
     steps:
     - name: Checkout         # Clone the repository code to the GitHub-hosted runner 
       uses: actions/checkout@v2
