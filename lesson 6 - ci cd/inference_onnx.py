@@ -60,19 +60,7 @@ class EmotionPredictor:
             logging.error(f"Error initializing ONNX model: {e}")
             raise
 
-        # # Set up ONNX runtime session
-        # print("Loading ONNX model!")
-        # self.ort_session = ort.InferenceSession(
-        #     model_onnx_path, 
-        #     providers=['CPUExecutionProvider']
-        # )
-        # print("ONNX model loaded successfully!")
-        
-        # # set up transform
-        # cut_size=44
-        # self.transform=transforms.Compose([transforms.TenCrop(cut_size),
-        #                                    transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])),
-        #                                    ])
+
     @timing
     def inference_image(self, image):
         # Call the undecorated version internally
