@@ -23,7 +23,7 @@ jobs:
       run: |
         docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID}} \
                      --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY}} \
-                     -t inference:latest .
+                     -t mlops-basics:latest .
     - name: Push2ECR
       id: ecr
       uses: jwalton/gh-ecr-push@v1
@@ -31,6 +31,6 @@ jobs:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-southeast-1
-        image: inference:latest
-    - name: Update lambda with lastest image
-      run: aws lambda update-function-code --function-name  mlops-basics --image-uri 149536469951.dkr.ecr.ap-southeast-1.amazonaws.com/inference:latest
+        image: mlops-basics:latest
+    - name: Update lambda with latest image
+      run: aws lambda update-function-code --function-name  mlops-basics --image-uri 149536469951.dkr.ecr.ap-southeast-1.amazonaws.com/mlops-basics:latest
