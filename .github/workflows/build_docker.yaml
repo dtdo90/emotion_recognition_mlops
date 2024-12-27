@@ -23,7 +23,7 @@ jobs:
       run: |
         docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID}}
                      --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY}}
-                     --t inference:latest .
+                     -t inference:latest .
     - name: Push2ECR
       id: ecr
       uses: jwalton/gh-ecr-push@v1
