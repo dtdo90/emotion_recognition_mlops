@@ -53,7 +53,7 @@ def lambda_handler(event, context):
             Key=image_key,
             Body=image_bytes,
             ContentType='image/png',
-            ACL='public-read' # make the image publicly accessible
+            #ACL='public-read' # make the image publicly accessible
         )
 
         # generate public url for the image
