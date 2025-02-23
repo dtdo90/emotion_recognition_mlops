@@ -14,8 +14,7 @@ inference=EmotionPredictor("./models/trained_model.onnx")
 def lambda_handler(event, context):
     """ AWS lambda handler for inference
         Input: use direct url 
-                { "image_url": "https://drive.google.com/uc?export=view&id=1XkJ6gvj46AAroLKOcGXDCf9pdSWksJy7" 
-                }
+                { "image_url": "https://drive.google.com/uc?export=view&id=1GqISERXvrCKxtwJfMKzIKCVi93JAOeSs" 
         Return: image_result_ulr
     """
     try:
